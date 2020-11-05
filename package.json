@@ -1,0 +1,19 @@
+{
+  "name": "perlin-app",
+  "version": "1.0.0",
+  "description": "A web-app which generates images with Perlin noise.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Jmc18134/perlin-app.git"
+  },
+  "author": "James McGregor",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Jmc18134/perlin-app/issues"
+  },
+  "homepage": "https://github.com/Jmc18134/perlin-app#readme"
+}
