@@ -2,8 +2,9 @@
   "name": "perlin-app",
   "version": "1.0.0",
   "description": "A web-app which generates images with Perlin noise.",
-  "main": "index.js",
   "scripts": {
+    "start": "rimraf dist perlin && webpack serve --mode development",
+    "build": "rimraf dist perlin && webpack",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
@@ -11,9 +12,31 @@
     "url": "git+https://github.com/Jmc18134/perlin-app.git"
   },
   "author": "James McGregor",
-  "license": "ISC",
+  "license": "MIT",
   "bugs": {
     "url": "https://github.com/Jmc18134/perlin-app/issues"
   },
-  "homepage": "https://github.com/Jmc18134/perlin-app#readme"
+  "homepage": "https://github.com/Jmc18134/perlin-app#readme",
+  "devDependencies": {
+    "@babel/cli": "^7.12.1",
+    "@babel/core": "^7.12.3",
+    "@babel/preset-env": "^7.12.1",
+    "@babel/preset-react": "^7.12.5",
+    "@types/react": "^16.9.56",
+    "@types/react-dom": "^16.9.9",
+    "@wasm-tool/wasm-pack-plugin": "^1.3.1",
+    "babel-loader": "^8.2.1",
+    "css-loader": "^5.0.1",
+    "react": "^17.0.1",
+    "react-dom": "^17.0.1",
+    "rimraf": "^3.0.2",
+    "style-loader": "^2.0.0",
+    "ts-loader": "^8.0.11",
+    "typescript": "^4.0.5",
+    "webpack": "^5.4.0",
+    "webpack-cli": "^4.2.0",
+    "webpack-dev-middleware": "^4.0.2",
+    "webpack-dev-server": "^3.11.0"
+  },
+  "dependencies": {}
 }
