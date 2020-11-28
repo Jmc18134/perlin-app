@@ -1,0 +1,22 @@
+.ImageControls {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.ImageControls > div {
+    margin: 5px 5px 5px 5px;
+    width: 35%;
+}
+
+.ImageControls label {
+    margin: 2% 2% 2% 2%;
+    padding: 0.5%;
+}
+
+.ImageControls input {
+    margin-top: 5.5px;
+    padding: 0.5%;
+    float: right;
+}

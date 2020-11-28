@@ -13,6 +13,11 @@ module.exports = {
         exclude: /(node_modules|bower_components)/,
         use: ["babel-loader", "ts-loader"]
       },
+      {
+        test: /\.(css)$/,
+        exclude: /(node_modules|bower_components)/,
+        use: ["style-loader", "css-loader"]
+      }
     ]
   },
   resolve: { extensions: [".tsx", ".ts", ".js"]},
