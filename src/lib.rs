@@ -43,7 +43,7 @@ fn grad2(h: u8, x: f32, y: f32) -> f32 {
 }
 
 #[wasm_bindgen]
-pub fn perlin2d(x: f32, y: f32, octaves: u32, persistence: f32, xrepeat: u32, yrepeat: u32) -> f32 {
+pub fn perlin2d(x: f32, y: f32, xrepeat: u32, yrepeat: u32) -> f32 {
     let cx = x as u32 & 255;
     let cy = y as u32 & 255;
     let ox = x.fract();
@@ -83,6 +83,23 @@ pub fn perlin2d(x: f32, y: f32, octaves: u32, persistence: f32, xrepeat: u32, yr
     (lerp(x1, x2, yfade) + 1.0) / 2.0
 }
 
+#[wasm_bindgen]
+pub fn octave_perlin(x: f32, y: f32, octaves: u32, persistence: f32, xrepeat: u32, yrepeat: u32) -> f32 {
+    let mut total = 0.0;
+    let mut freq = 1.0;
+    let mut amp = 1.0;
+    let mut max_val = 0.0;
+
+    for _ in 0..octaves {
+        total += perlin2d(x * freq, y * freq, xrepeat, yrepeat) * amp;
+        max_val += amp;
+        amp *= persistence;
+        freq *= 2.0;
+    }
+
+    total / max_val
+}
+
 fn fade(t: f32) -> f32 {
     t * t * t * (t * (t * 6.0 - 15.0) + 10.0)
 }
@@ -112,7 +129,7 @@ impl PerlinGen {
             for j in 0..self.height {
                 // Get the perlin noise value at the coords of this pixel
                 // Output is an f32 between 0 and 1, so map it to an RGB value
-                let val = (255.0 * perlin2d(i as f32, j as f32, octaves, persistence, xrepeat, yrepeat)) as u8;
+                let val = (255.0 * octave_perlin(i as f32, j as f32, octaves, persistence, xrepeat, yrepeat)) as u8;
 
                 let pixel = pixels.next().unwrap();
                 pixel[0] = val;

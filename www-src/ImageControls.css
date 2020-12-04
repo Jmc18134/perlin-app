@@ -3,20 +3,23 @@
     flex-direction: column;
     justify-content: center;
     align-items: center;
+    padding-right: 5%;
 }
 
 .ImageControls > div {
+    display: flex;
     margin: 5px 5px 5px 5px;
-    width: 35%;
 }
 
 .ImageControls label {
     margin: 2% 2% 2% 2%;
     padding: 0.5%;
+    font-size: x-large;
 }
 
 .ImageControls input {
     margin-top: 5.5px;
     padding: 0.5%;
+    font-size: large;
     float: right;
 }

@@ -2,6 +2,8 @@ import React, {Component} from "react";
 import ImageControls from "./ImageControls"
 import PerlinImage from "./PerlinImage"
 
+import "./ImageGenerator.css"
+
 interface ImageGeneratorProps {}
 interface ImageGeneratorState {
   octaves: number;

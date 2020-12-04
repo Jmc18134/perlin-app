@@ -1,5 +1,7 @@
 import React, {Component} from "react";
 
+import "./PerlinImage.css"
+
 interface PerlinImageProps {
     persistence: number;
     octaves: number;
@@ -14,7 +16,7 @@ class PerlinImage extends Component<PerlinImageProps, {}> {
   
     render() {
       return (
-        <canvas></canvas>
+        <canvas className="PerlinImage" width="600" height="600"></canvas>
       );
     }
 }
