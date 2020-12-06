@@ -24,6 +24,8 @@ class ImageControls extends Component<ImageControlProps, {}> {
       this.onPersistenceChange = this.onPersistenceChange.bind(this);
       this.onXrepeatChange = this.onXrepeatChange.bind(this);
       this.onYrepeatChange = this.onYrepeatChange.bind(this);
+      this.isFloatKey = this.isFloatKey.bind(this);
+      this.isIntKey = this.isIntKey.bind(this);
     }
   
     onOctaveChange(e: ChangeEvent<HTMLInputElement>) {

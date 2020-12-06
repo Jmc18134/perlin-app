@@ -41,6 +41,6 @@ module.exports = {
     }),
   ],
   experiments: {
-    asyncWebAssembly: true
+    asyncWebAssembly: true,
   }
 };
