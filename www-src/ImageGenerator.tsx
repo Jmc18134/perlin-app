@@ -10,6 +10,7 @@ interface ImageGeneratorState {
   persistence: number;
   xrepeat: number;
   yrepeat: number;
+  seed: number;
 }
 
 class ImageGenerator extends Component<ImageGeneratorProps, ImageGeneratorState> {
@@ -19,11 +20,13 @@ class ImageGenerator extends Component<ImageGeneratorProps, ImageGeneratorState>
     this.handlePersistenceChange = this.handlePersistenceChange.bind(this);
     this.handleXrepeatChange = this.handleXrepeatChange.bind(this);
     this.handleYrepeatChange = this.handleYrepeatChange.bind(this);
+    this.handleSeedChange = this.handleSeedChange.bind(this);
     this.state = {
       xrepeat: 0.0,
       yrepeat: 0.0,
       persistence: 0.0,
-      octaves: 0
+      octaves: 1,
+      seed: 0,
     };
   }
 
@@ -43,6 +46,10 @@ class ImageGenerator extends Component<ImageGeneratorProps, ImageGeneratorState>
     this.setState({yrepeat: v});
   }
 
+  handleSeedChange(v: number) {
+    this.setState({seed: v});
+  }
+
   render() {
     return (
       <div className="ImageGenerator">
@@ -51,6 +58,12 @@ class ImageGenerator extends Component<ImageGeneratorProps, ImageGeneratorState>
           onPersistenceChange={this.handlePersistenceChange}
           onXrepeatChange={this.handleXrepeatChange}
           onYrepeatChange={this.handleYrepeatChange}
+          onSeedChange={this.handleSeedChange}
+          octaveValue={this.state.octaves}
+          persistenceValue={this.state.persistence}
+          xrepeatValue={this.state.xrepeat}
+          yrepeatValue={this.state.yrepeat}
+          seedValue={this.state.seed}
         />
 
         <PerlinImage

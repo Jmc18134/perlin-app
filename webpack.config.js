@@ -6,6 +6,10 @@ const { wasm, experiments } = require("webpack");
 module.exports = {
   entry: "./www-src/index.tsx",
   mode: "development",
+  experiments: {
+    syncWebAssembly: true,
+    topLevelAwait: true
+  },
   module: {
     rules: [
       {
@@ -40,7 +44,4 @@ module.exports = {
       outName: "perlin",
     }),
   ],
-  experiments: {
-    asyncWebAssembly: true,
-  }
 };

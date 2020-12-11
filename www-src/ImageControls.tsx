@@ -15,6 +15,15 @@ interface ImageControlProps {
     onYrepeatChange(
       newRepeat: number
     ): void;
+    onSeedChange(
+      newSeed: number
+    ): void;
+
+    seedValue: number
+    octaveValue: number;
+    persistenceValue: number;
+    xrepeatValue: number;
+    yrepeatValue: number;
 }
 
 class ImageControls extends Component<ImageControlProps, {}> {
@@ -24,6 +33,7 @@ class ImageControls extends Component<ImageControlProps, {}> {
       this.onPersistenceChange = this.onPersistenceChange.bind(this);
       this.onXrepeatChange = this.onXrepeatChange.bind(this);
       this.onYrepeatChange = this.onYrepeatChange.bind(this);
+      this.onSeedChange = this.onSeedChange.bind(this);
       this.isFloatKey = this.isFloatKey.bind(this);
       this.isIntKey = this.isIntKey.bind(this);
     }
@@ -46,6 +56,11 @@ class ImageControls extends Component<ImageControlProps, {}> {
     onXrepeatChange(e: ChangeEvent<HTMLInputElement>) {
       let newRepeat: number = parseFloat(e.target.value);
       this.props.onXrepeatChange(newRepeat);
+    }
+
+    onSeedChange(e: ChangeEvent<HTMLInputElement>) {
+      let newRepeat: number = parseInt(e.target.value);
+      this.props.onSeedChange(newRepeat);
     }
 
     isIntKey(e: KeyboardEvent) {
@@ -72,7 +87,7 @@ class ImageControls extends Component<ImageControlProps, {}> {
               type="number" name="xrepeat" min={0} step={1}
               onChange={this.onXrepeatChange}
               onKeyPress={this.isIntKey}
-              value={0}
+              value={this.props.xrepeatValue}
             />
           </div>
 
@@ -82,7 +97,7 @@ class ImageControls extends Component<ImageControlProps, {}> {
               type="number" name="yrepeat" min={0} step={1}
               onChange={this.onYrepeatChange}
               onKeyPress={this.isIntKey}
-              value={0}
+              value={this.props.yrepeatValue}
             />
           </div>
 
@@ -92,17 +107,27 @@ class ImageControls extends Component<ImageControlProps, {}> {
               type="number" name="octaves" min={0} step={1}
               onChange={this.onOctaveChange}
               onKeyPress={this.isIntKey}
-              value={0}
+              value={this.props.octaveValue}
             />
           </div>
 
           <div className="LabelInputPair">
             <label htmlFor="persistence">Persistence:</label>
             <input 
-              type="number" name="persistence" min={0.000} step={0.001}
+              type="number" name="persistence" min={0.0} step={0.1}
               onChange={this.onPersistenceChange}
               onKeyPress={this.isFloatKey}
-              value={0.000}
+              value={this.props.persistenceValue}
+            />
+          </div>
+
+          <div className="LabelInputPair">
+            <label htmlFor="seed">Seed:</label>
+            <input 
+              type="number" name="seed" min={0} step={1}
+              onChange={this.onSeedChange}
+              onKeyPress={this.isIntKey}
+              value={this.props.seedValue}
             />
           </div>
         </div>

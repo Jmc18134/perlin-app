@@ -2,8 +2,8 @@ import React, {PureComponent} from "react";
 
 import "./PerlinImage.css"
 
-import { PerlinGen } from "../perlin";
-import { memory } from "../perlin/perlin_bg.wasm"
+let { PerlinGen } = await import("../perlin/perlin");
+let { memory } = await import("../perlin/perlin_bg.wasm");
 
 interface PerlinImageProps {
     octaves: number;
@@ -14,12 +14,12 @@ interface PerlinImageProps {
 
 class PerlinImage extends PureComponent<PerlinImageProps, {}> {
     canvasRef: React.RefObject<HTMLCanvasElement>
-    backingPixels: PerlinGen
+    backingPixels: any
 
     constructor(props: PerlinImageProps) {
       super(props);
       this.canvasRef = React.createRef();
-      this.backingPixels = PerlinGen.new(600, 600);
+      this.backingPixels = PerlinGen.new(256, 256);
     }
 
     componentDidUpdate() {
@@ -32,8 +32,9 @@ class PerlinImage extends PureComponent<PerlinImageProps, {}> {
       );
 
       const pixelPtr = this.backingPixels.get_pixels();
-      const pixels = new Uint8ClampedArray(memory.buffer, pixelPtr, 600 * 600);
-      const newData = new ImageData(pixels, 600, 600);
+      const pixels = new Uint8ClampedArray(memory.buffer, pixelPtr, 4 * 256 * 256);
+ 
+      const newData = new ImageData(pixels, 256, 256);
 
       const canvas = this.canvasRef.current;
       const ctx = canvas.getContext('2d');
@@ -43,7 +44,7 @@ class PerlinImage extends PureComponent<PerlinImageProps, {}> {
   
     render() {
       return (
-        <canvas className="PerlinImage" width="600" height="600" ref={this.canvasRef}></canvas>
+        <canvas className="PerlinImage" width="256" height="256" ref={this.canvasRef}></canvas>
       );
     }
 }

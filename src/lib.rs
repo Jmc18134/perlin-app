@@ -1,3 +1,7 @@
+#![feature(test)]
+
+extern crate test;
+
 use wasm_bindgen::prelude::*;
 
 const P: [u8; 512] = [
@@ -42,7 +46,6 @@ fn grad2(h: u8, x: f32, y: f32) -> f32 {
     }
 }
 
-#[wasm_bindgen]
 pub fn perlin2d(x: f32, y: f32, xrepeat: u32, yrepeat: u32) -> f32 {
     let cx = x as u32 & 255;
     let cy = y as u32 & 255;
@@ -83,7 +86,6 @@ pub fn perlin2d(x: f32, y: f32, xrepeat: u32, yrepeat: u32) -> f32 {
     (lerp(x1, x2, yfade) + 1.0) / 2.0
 }
 
-#[wasm_bindgen]
 pub fn octave_perlin(x: f32, y: f32, octaves: u32, persistence: f32, xrepeat: u32, yrepeat: u32) -> f32 {
     let mut total = 0.0;
     let mut freq = 1.0;
@@ -127,9 +129,12 @@ impl PerlinGen {
         let mut pixels = self.pixels.chunks_mut(4);
         for i in 0..self.width {
             for j in 0..self.height {
-                // Get the perlin noise value at the coords of this pixel
-                // Output is an f32 between 0 and 1, so map it to an RGB value
-                let val = (255.0 * octave_perlin(i as f32, j as f32, octaves, persistence, xrepeat, yrepeat)) as u8;
+                // Perlin noise is 0 at whole numbers - we need to modify the inputs
+                // I haven't been able to find a good answer for the 'right' way to do this
+                let x = (i as f32 / self.width as f32) * 10.0;
+                let y = (j as f32 / self.height as f32) * 10.0;
+                let result = octave_perlin(x, y, octaves, persistence, xrepeat, yrepeat);
+                let val = (255.0 * result) as u8;
 
                 let pixel = pixels.next().unwrap();
                 pixel[0] = val;
@@ -142,5 +147,19 @@ impl PerlinGen {
 
     pub fn get_pixels(&self) -> *const u8 {
         self.pixels.as_ptr()
+    }
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+    use test::Bencher;
+
+    #[bench]
+    fn bench_600x600_perlin_fill(b: &mut Bencher) {
+        let mut img = PerlinGen::new(1000, 1000);
+        b.iter(|| {
+            img.fill_self(5, 1.0, 0, 0);
+        });
     }
 }
