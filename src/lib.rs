@@ -36,64 +36,78 @@ fn lerp(a: f32, b: f32, x: f32) -> f32 {
     a + x * (b - a)
 }
 
-fn grad2(h: u8, x: f32, y: f32) -> f32 {
-    match h & 0x7 {
+fn grad(h: u8, x: f32, y: f32, z: f32) -> f32 {
+    match h & 0xF {
         0x0 => x + y,
         0x1 => -x + y,
         0x2 => x - y,
         0x3 => -x - y,
-        _ => 0.0,
+        0x4 => x + z,
+        0x5 => -x + z,
+        0x6 => x - z,
+        0x7 => -x - z,
+        0x8 => y + z,
+        0x9 => -y + z,
+        0xA => y - z,
+        0xB => -y - z,
+        0xC => y + x,
+        0xD => -y + z,
+        0xE => y - x,
+        0xF => -y - z,
+        _ => 0.0
     }
 }
 
-pub fn perlin2d(x: f32, y: f32, xrepeat: u32, yrepeat: u32) -> f32 {
-    let cx = x as u32 & 255;
-    let cy = y as u32 & 255;
-    let ox = x.fract();
-    let oy = y.fract();
+pub fn perlin3d(x: f32, y: f32, z: f32, xrepeat: u32, yrepeat: u32) -> f32 {
+    // Get the unit cube that the point lies in
+    let cx = x as usize & 255;
+    let cy = y as usize & 255;
+    let cz = z as usize & 255;
+    // Get the position of the point within the cube
+    let xf = x.fract();
+    let yf = y.fract();
+    let zf = z.fract();
 
-    let xfade = fade(ox);
-    let yfade = fade(oy);
+    let xfade = fade(xf);
+    let yfade = fade(yf);
+    let zfade = fade(zf);
 
-    let i1 = cx as usize;
-    let i2 = cy as usize;
-    let mut xinc = cx as u32 + 1;
-    if xrepeat > 0 {
-        xinc %= xrepeat;
-    }
+    let aaa = P[P[P[cx] as usize + cy] as usize + cz];
+    let aba = P[P[P[cx] as usize + cy + 1] as usize + cz];
+    let aab = P[P[P[cx] as usize + cy] as usize + cz + 1];
+    let abb = P[P[P[cx] as usize + cy + 1] as usize + cz + 1];
+    let baa = P[P[P[cx + 1] as usize + cy] as usize + cz];
+    let bba = P[P[P[cx + 1] as usize + cy + 1] as usize + cz];
+    let bab = P[P[P[cx + 1] as usize + cy] as usize + cz + 1];
+    let bbb = P[P[P[cx + 1] as usize + cy + 1] as usize + cz + 1];
 
-    let xinc = xinc as usize;
-
-    let mut yinc = cy as u32 + 1;
-    if yrepeat > 0 {
-        yinc %= yrepeat;
-    }
-
-    let yinc = yinc as usize;
-
-    let aa = P[P[i1] as usize + i2];
-    let ab = P[P[i1] as usize + yinc];
-    let ba = P[P[xinc] as usize + i2];
-    let bb = P[P[xinc] as usize + yinc];
-
-    let x1 = lerp(grad2(aa, ox, oy), grad2(ba, ox - 1.0, oy), xfade);
+    let x1 = lerp(grad(aaa, xf, yf, zf), grad(baa, xf - 1.0, yf, zf), xfade);
     let x2 = lerp(
-        grad2(ab, ox, oy - 1.0),
-        grad2(bb, ox - 1.0, oy - 1.0),
+        grad(aba, xf, yf - 1.0, zf),
+        grad(bba, xf - 1.0, yf - 1.0, zf),
         xfade,
     );
+    let y1 = lerp(x1, x2, yfade);
 
-    (lerp(x1, x2, yfade) + 1.0) / 2.0
+    let x1 = lerp(grad(aab, xf, yf, zf - 1.0), grad(bab, xf - 1.0, yf, zf - 1.0), xfade);
+    let x2 = lerp(
+        grad(abb, xf, yf - 1.0, zf - 1.0),
+        grad(bbb, xf - 1.0, yf - 1.0, zf - 1.0),
+        xfade,
+    );
+    let y2 = lerp(x1, x2, yfade);
+
+    (lerp(y1, y2, zfade) + 1.0) / 2.0
 }
 
-pub fn octave_perlin(x: f32, y: f32, octaves: u32, persistence: f32, xrepeat: u32, yrepeat: u32) -> f32 {
+pub fn octave_perlin(x: f32, y: f32, z: f32, octaves: u32, persistence: f32, xrepeat: u32, yrepeat: u32) -> f32 {
     let mut total = 0.0;
     let mut freq = 1.0;
     let mut amp = 1.0;
     let mut max_val = 0.0;
 
     for _ in 0..octaves {
-        total += perlin2d(x * freq, y * freq, xrepeat, yrepeat) * amp;
+        total += perlin3d(x * freq, y * freq, z * freq, xrepeat, yrepeat) * amp;
         max_val += amp;
         amp *= persistence;
         freq *= 2.0;
@@ -133,7 +147,7 @@ impl PerlinGen {
                 // I haven't been able to find a good answer for the 'right' way to do this
                 let x = (i as f32 / self.width as f32) * 10.0;
                 let y = (j as f32 / self.height as f32) * 10.0;
-                let result = octave_perlin(x, y, octaves, persistence, xrepeat, yrepeat);
+                let result = octave_perlin(x, y, 0.0, octaves, persistence, xrepeat, yrepeat);
                 let val = (255.0 * result) as u8;
 
                 let pixel = pixels.next().unwrap();
@@ -159,7 +173,7 @@ mod tests {
     fn bench_600x600_perlin_fill(b: &mut Bencher) {
         let mut img = PerlinGen::new(1000, 1000);
         b.iter(|| {
-            img.fill_self(5, 1.0, 0, 0);
+            img.fill_self(5, 1.0, 0.0, 0, 0);
         });
     }
 }
