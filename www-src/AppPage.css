@@ -1,5 +1,5 @@
-.AppPage {
+.AppPage .PageTitle {
     text-align: center;
     font-family: 'Russo One', "serif";
-    font-size: x-large;
+    font-size: 250%;
 }

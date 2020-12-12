@@ -40,7 +40,8 @@ function AppContent(props: {}) {
         </p>
         
         <p className="Footer">
-          This page is now on GitHub. You can find the repo <a>here</a>.
+          This app was created with React, Rust WebAssembly, and TypeScript.
+          You can find GitHub the repo <a href="https://github.com/Jmc18134/perlin-app">here</a>.
         </p>
       </div>
     );

@@ -1,6 +1,5 @@
 import React, {ChangeEvent, Component} from "react";
 
-import Title from "./Title";
 import AppContent from "./AppContent";
 import "./AppPage.css";
 
@@ -8,7 +7,7 @@ class App extends Component {
   render() {
     return(
       <div className="AppPage">
-        <Title/>
+        <h1 className="PageTitle">Perlin Images</h1>
         <AppContent/>
       </div>
     );

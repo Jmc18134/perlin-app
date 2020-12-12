@@ -1,7 +1,8 @@
 .ImageControls {
     display: flex;
     flex-direction: column;
-    align-items: center;
+    justify-items: center;
+    align-items: right;
     padding-right: 5%;
 }
 
@@ -17,7 +18,7 @@
 }
 
 .ImageControls input {
-    border-radius: 20%;
+    border-radius: 30%;
     margin-top: 5.5px;
     padding: 0.5%;
     font-size: large;
