@@ -1,4 +1,5 @@
 import React, {PureComponent} from "react";
+import { perlingen_fill_self } from "../perlin/perlin_bg.wasm";
 
 import "./PerlinImage.css"
 
@@ -8,6 +9,7 @@ let { memory } = await import("../perlin/perlin_bg.wasm");
 interface PerlinImageProps {
     octaves: number;
     persistence: number;
+    seed: number;
 }
 
 class PerlinImage extends PureComponent<PerlinImageProps, {}> {
@@ -17,11 +19,16 @@ class PerlinImage extends PureComponent<PerlinImageProps, {}> {
     constructor(props: PerlinImageProps) {
       super(props);
       this.canvasRef = React.createRef();
-      this.backingPixels = PerlinGen.new(256, 256, 42);
+      this.backingPixels = PerlinGen.new(256, 256, this.props.seed);
     }
 
-    componentDidUpdate() {
-      const { octaves, persistence } = this.props;
+    componentDidUpdate(prevProps: PerlinImageProps, _prevState: {}) {
+      const { octaves, persistence, seed } = this.props;
+
+      if (seed !== prevProps.seed) {
+        this.backingPixels.change_seed(seed);
+      }
+
       this.backingPixels.fill_self(
         octaves,
         persistence,

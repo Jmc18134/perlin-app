@@ -20,7 +20,7 @@ class ImageGenerator extends Component<ImageGeneratorProps, ImageGeneratorState>
     this.state = {
       persistence: 0.0,
       octaves: 1,
-      seed: 0,
+      seed: 1,
     };
   }
 
@@ -51,6 +51,7 @@ class ImageGenerator extends Component<ImageGeneratorProps, ImageGeneratorState>
         <PerlinImage
           octaves={this.state.octaves}
           persistence={this.state.persistence}
+          seed={this.state.seed}
         />
       </div>
     );
