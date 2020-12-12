@@ -2,4 +2,5 @@
     width: 25%;
     height: 25%;
     border: 1px solid #000000;
+    box-shadow: 5px 5px 5px gray;
 }

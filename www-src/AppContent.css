@@ -2,7 +2,17 @@
     border-style: dashed;
     background-color: white;
     margin: 1% 5% auto 5%;
-    font-family: 'Times New Roman', Times, serif;
+    font-family: Raleway, sans-serif;
     font-size: x-large;
     padding: 5% 5% 5% 5%;
+}
+
+.KeyPhrase {
+    font-weight: bold;
+    color: #333652;
+}
+
+.Footer {
+    font-size: large;
+    padding-top: 5%;
 }
