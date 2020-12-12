@@ -12,10 +12,14 @@ interface ImageControlProps {
     onSeedChange(
       newSeed: number
     ): void;
+    onPeriodChange(
+      newPeriod: number
+    ): void;
 
     seedValue: number
     octaveValue: number;
     persistenceValue: number;
+    periodValue: number;
 }
 
 class ImageControls extends Component<ImageControlProps, {}> {
@@ -24,6 +28,7 @@ class ImageControls extends Component<ImageControlProps, {}> {
       this.onOctaveChange = this.onOctaveChange.bind(this);
       this.onPersistenceChange = this.onPersistenceChange.bind(this);
       this.onSeedChange = this.onSeedChange.bind(this);
+      this.onPeriodChange = this.onPeriodChange.bind(this);
       this.isFloatKey = this.isFloatKey.bind(this);
       this.isIntKey = this.isIntKey.bind(this);
     }
@@ -41,6 +46,11 @@ class ImageControls extends Component<ImageControlProps, {}> {
     onSeedChange(e: ChangeEvent<HTMLInputElement>) {
       let newRepeat: number = parseInt(e.target.value);
       this.props.onSeedChange(newRepeat);
+    }
+
+    onPeriodChange(e: ChangeEvent<HTMLInputElement>) {
+      let newRepeat: number = parseFloat(e.target.value);
+      this.props.onPeriodChange(newRepeat);
     }
 
     isIntKey(e: KeyboardEvent) {
@@ -88,6 +98,16 @@ class ImageControls extends Component<ImageControlProps, {}> {
               onChange={this.onSeedChange}
               onKeyPress={this.isIntKey}
               value={this.props.seedValue}
+            />
+          </div>
+
+          <div className="LabelInputPair">
+            <label htmlFor="period">Period:</label>
+            <input 
+              type="number" name="period" min={1} step={1}
+              onChange={this.onPeriodChange}
+              onKeyPress={this.isFloatKey}
+              value={this.props.periodValue}
             />
           </div>
         </div>

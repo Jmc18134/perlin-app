@@ -9,6 +9,7 @@ interface ImageGeneratorState {
   octaves: number;
   persistence: number;
   seed: number;
+  period: number;
 }
 
 class ImageGenerator extends Component<ImageGeneratorProps, ImageGeneratorState> {
@@ -17,10 +18,12 @@ class ImageGenerator extends Component<ImageGeneratorProps, ImageGeneratorState>
     this,this.handleOctaveChange = this.handleOctaveChange.bind(this);
     this.handlePersistenceChange = this.handlePersistenceChange.bind(this);
     this.handleSeedChange = this.handleSeedChange.bind(this);
+    this.handlePeriodChange = this.handlePeriodChange.bind(this);
     this.state = {
       persistence: 0.0,
       octaves: 1,
       seed: 1,
+      period: 1
     };
   }
 
@@ -36,6 +39,10 @@ class ImageGenerator extends Component<ImageGeneratorProps, ImageGeneratorState>
     this.setState({seed: v});
   }
 
+  handlePeriodChange(v: number) {
+    this.setState({period: v});
+  }
+
   render() {
     return (
       <div className="ImageGenerator">
@@ -43,15 +50,18 @@ class ImageGenerator extends Component<ImageGeneratorProps, ImageGeneratorState>
           onOctaveChange={this.handleOctaveChange}
           onPersistenceChange={this.handlePersistenceChange}
           onSeedChange={this.handleSeedChange}
+          onPeriodChange={this.handlePeriodChange}
           octaveValue={this.state.octaves}
           persistenceValue={this.state.persistence}
           seedValue={this.state.seed}
+          periodValue={this.state.period}
         />
 
         <PerlinImage
           octaves={this.state.octaves}
           persistence={this.state.persistence}
           seed={this.state.seed}
+          period={this.state.period}
         />
       </div>
     );

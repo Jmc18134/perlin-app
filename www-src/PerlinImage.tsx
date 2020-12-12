@@ -10,6 +10,7 @@ interface PerlinImageProps {
     octaves: number;
     persistence: number;
     seed: number;
+    period: number;
 }
 
 class PerlinImage extends PureComponent<PerlinImageProps, {}> {
@@ -23,7 +24,7 @@ class PerlinImage extends PureComponent<PerlinImageProps, {}> {
     }
 
     componentDidUpdate(prevProps: PerlinImageProps, _prevState: {}) {
-      const { octaves, persistence, seed } = this.props;
+      const { octaves, persistence, seed, period } = this.props;
 
       if (seed !== prevProps.seed) {
         this.backingPixels.change_seed(seed);
@@ -32,6 +33,7 @@ class PerlinImage extends PureComponent<PerlinImageProps, {}> {
       this.backingPixels.fill_self(
         octaves,
         persistence,
+        period
       );
 
       const pixelPtr = this.backingPixels.get_pixels();

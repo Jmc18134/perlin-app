@@ -199,14 +199,14 @@ impl PerlinGen {
         }
     }
 
-    pub fn fill_self(&mut self, octaves: u32, persistence: f32) {
+    pub fn fill_self(&mut self, octaves: u32, persistence: f32, period: f32) {
         let mut pixels = self.pixels.chunks_mut(4);
         for i in 0..self.width {
             for j in 0..self.height {
                 // Perlin noise is 0 at whole numbers - we need to modify the inputs
                 // I haven't been able to find a good answer for the 'right' way to do this
-                let x = (i as f32 / self.width as f32) * 10.0;
-                let y = (j as f32 / self.height as f32) * 10.0;
+                let x = i as f32 / period;
+                let y = j as f32 / period;
                 let result = octave_perlin(x, y, 0.0, octaves, persistence, &mut self.gradients);
                 let val = (255.0 * result) as u8;
 
@@ -240,14 +240,14 @@ mod tests {
     #[test]
     fn test_perlin_fill() {
         let mut img = PerlinGen::new(1000, 1000, 42);
-        img.fill_self(2, 1.0);
+        img.fill_self(2, 1.0, 1.0);
     }
 
     #[bench]
     fn bench_600x600_perlin_fill(b: &mut Bencher) {
         let mut img = PerlinGen::new(1000, 1000, 42);
         b.iter(|| {
-            img.fill_self(2, 1.0);
+            img.fill_self(2, 1.0, 1.0);
         });
     }
 }
