@@ -9,12 +9,6 @@ interface ImageControlProps {
     onPersistenceChange(
       newPersistence: number
     ): void;
-    onXrepeatChange(
-      newRepeat: number
-    ): void;
-    onYrepeatChange(
-      newRepeat: number
-    ): void;
     onSeedChange(
       newSeed: number
     ): void;
@@ -22,8 +16,6 @@ interface ImageControlProps {
     seedValue: number
     octaveValue: number;
     persistenceValue: number;
-    xrepeatValue: number;
-    yrepeatValue: number;
 }
 
 class ImageControls extends Component<ImageControlProps, {}> {
@@ -31,8 +23,6 @@ class ImageControls extends Component<ImageControlProps, {}> {
       super(props);
       this.onOctaveChange = this.onOctaveChange.bind(this);
       this.onPersistenceChange = this.onPersistenceChange.bind(this);
-      this.onXrepeatChange = this.onXrepeatChange.bind(this);
-      this.onYrepeatChange = this.onYrepeatChange.bind(this);
       this.onSeedChange = this.onSeedChange.bind(this);
       this.isFloatKey = this.isFloatKey.bind(this);
       this.isIntKey = this.isIntKey.bind(this);
@@ -46,16 +36,6 @@ class ImageControls extends Component<ImageControlProps, {}> {
     onPersistenceChange(e: ChangeEvent<HTMLInputElement>) {
       let newPers: number = parseFloat(e.target.value);
       this.props.onPersistenceChange(newPers);
-    }
-  
-    onYrepeatChange(e: ChangeEvent<HTMLInputElement>) {
-      let newRepeat: number = parseFloat(e.target.value);
-      this.props.onYrepeatChange(newRepeat);
-    }
-  
-    onXrepeatChange(e: ChangeEvent<HTMLInputElement>) {
-      let newRepeat: number = parseFloat(e.target.value);
-      this.props.onXrepeatChange(newRepeat);
     }
 
     onSeedChange(e: ChangeEvent<HTMLInputElement>) {
@@ -81,26 +61,6 @@ class ImageControls extends Component<ImageControlProps, {}> {
     render() {
       return (
         <div className="ImageControls">
-          <div className="LabelInputPair">
-            <label htmlFor="xrepeat">X-axis Repeat:</label>
-            <input
-              type="number" name="xrepeat" min={0} step={1}
-              onChange={this.onXrepeatChange}
-              onKeyPress={this.isIntKey}
-              value={this.props.xrepeatValue}
-            />
-          </div>
-
-          <div className="LabelInputPair">
-            <label htmlFor="yrepeat">Y-axis Repeat:</label>
-            <input
-              type="number" name="yrepeat" min={0} step={1}
-              onChange={this.onYrepeatChange}
-              onKeyPress={this.isIntKey}
-              value={this.props.yrepeatValue}
-            />
-          </div>
-
           <div className="LabelInputPair">
             <label htmlFor="octaves">No. of octaves:</label>
             <input

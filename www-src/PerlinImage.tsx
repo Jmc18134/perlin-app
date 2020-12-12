@@ -8,8 +8,6 @@ let { memory } = await import("../perlin/perlin_bg.wasm");
 interface PerlinImageProps {
     octaves: number;
     persistence: number;
-    xrepeat: number;
-    yrepeat: number;
 }
 
 class PerlinImage extends PureComponent<PerlinImageProps, {}> {
@@ -19,16 +17,14 @@ class PerlinImage extends PureComponent<PerlinImageProps, {}> {
     constructor(props: PerlinImageProps) {
       super(props);
       this.canvasRef = React.createRef();
-      this.backingPixels = PerlinGen.new(256, 256);
+      this.backingPixels = PerlinGen.new(256, 256, 42);
     }
 
     componentDidUpdate() {
-      const { octaves, persistence, xrepeat, yrepeat } = this.props;
+      const { octaves, persistence } = this.props;
       this.backingPixels.fill_self(
         octaves,
         persistence,
-        xrepeat,
-        yrepeat
       );
 
       const pixelPtr = this.backingPixels.get_pixels();
