@@ -1,6 +1,7 @@
 const path = require("path");
 const webpack = require("webpack");
 const WasmPackPlugin = require("@wasm-tool/wasm-pack-plugin");
+const CopyWebpackPlugin = require('copy-webpack-plugin');
 const { wasm, experiments } = require("webpack");
 
 module.exports = {
@@ -31,7 +32,7 @@ module.exports = {
     filename: "bundle.js"
   },
   devServer: {
-    contentBase: path.join(__dirname, "public/"),
+    contentBase: path.join(__dirname, "dist/"),
     port: 3000,
     publicPath: "http://localhost:3000/dist/",
     hotOnly: true
@@ -43,5 +44,10 @@ module.exports = {
       outDir: "perlin",
       outName: "perlin",
     }),
+    new CopyWebpackPlugin({
+      patterns: [
+          { from: 'public' }
+      ]
+  })
   ],
 };
