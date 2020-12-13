@@ -28,7 +28,7 @@ module.exports = {
   resolve: { extensions: [".tsx", ".ts", ".js"]},
   output: {
     path: path.resolve(__dirname, "dist/"),
-    publicPath: "/dist/",
+    publicPath: "https://jmc18134.github.io/perlin-app/",
     filename: "bundle.js"
   },
   devServer: {
